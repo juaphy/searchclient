@@ -32,8 +32,17 @@ public class CxjDaoImpl extends HibernateBaseDao implements CxjDao {
         String sql = "from TCxjXjfwpd where status='1' ";
         sql += " and year = '" + year + "'";
         sql += " and month = '" + month + "'";
+        sql += " order by year desc, month desc, createtime desc";
+
+        String sql2 = "from TCxjXjfwpd where status='1' order by year desc, month desc, createtime desc";
         Query query = getSession().createQuery(sql);
-        return query.list();
+        List list = query.list();
+        if (list == null || list.size() < 5) {
+            Query query2 = getSession().createQuery(sql2);
+            query2.setMaxResults(5);
+            list = query2.list();
+        }
+        return list;
     }
 
     @Override

@@ -37,9 +37,29 @@
 				<div class="index_icon">
 					<div class="common_btn6">
 					    [#if menus??]
+                        <div class="menu_row_div" idx="0">
 					    [#list menus as menu]
-                        <div class="icon_div"><a to="[#if menu.homeUrl??]${menu.homeUrl!''}?areaId=${zwzxConfig.areaid!''}&menuId=${menu.id!''}[/#if]" class="${menu.classname!''}">${menu.name!''}</a></div>
+                            [#assign nowRow = (nowRow!0) + 1]
+                            [#if (menu_index + 1) % 5 == 0]
+                            [#assign rows=(rows!0) + 1]
+                            [#assign nowRow = 1]
+                            </div>
+                            <div class="menu_row_div" idx="${rows!}">
+                            [/#if]
+                        <div class="icon_div" idx="${nowRow!}"><a to="[#if menu.homeUrl??]${menu.homeUrl!''}?areaId=${zwzxConfig.areaid!''}&menuId=${menu.id!''}[/#if]" class="${menu.classname!''}">${menu.name!''}</a></div>
                         [/#list]
+                        <script>
+                            var _rows = "${rows!}";
+                            if (_rows > 0) {
+                            	var _endMenuRowDiv = $(".menu_row_div[idx='" + _rows + "']");
+                            	var _thrildDiv = _endMenuRowDiv.find("div");
+                            	if (_thrildDiv != null && _thrildDiv.length == 2) {
+                            		var _divStr = '<div class="icon_div" style="box-shadow:  none;"><a to="" class="" style="cursor: inherit;"></a></div>';
+                            		$(_divStr).insertBefore(_endMenuRowDiv.find(".icon_div[idx='1']"));
+                            	}
+                            }
+                        </script>
+                        </div>
                         [/#if]
                     </div>
 				</div>
